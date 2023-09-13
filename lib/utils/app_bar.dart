@@ -4,7 +4,8 @@ import 'package:forestvpn_test/utils/test_style.dart';
 import 'icons.dart';
 
 class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
-  const AppBarWidget({Key? key}) : super(key: key);
+  final VoidCallback? onTap;
+  const AppBarWidget({Key? key, this.onTap}) : super(key: key);
 
   @override
   Size get preferredSize => const Size.fromHeight(60);
@@ -26,10 +27,13 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
         child: SvgPicture.asset(AppIcon.icon),
       ),
       actions: [
-        Center(
-          child: Text(
-            'Mark all reads',
-            style: AppTextStyles.appBarActionText,
+        InkWell(
+          onTap: onTap,
+          child: Center(
+            child: Text(
+              'Mark all reads',
+              style: AppTextStyles.appBarActionText,
+            ),
           ),
         ),
         const SizedBox(

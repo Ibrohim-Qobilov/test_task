@@ -12,6 +12,7 @@ class NewsBloc extends Bloc<NewsEvent, NewsState> {
   MockNewsRepository? repository = MockNewsRepository();
   NewsBloc() : super(NewsInitial()) {
     on<GetNewsEvent>(_getNews);
+    on<IsRead>(_getIsRead);
   }
 
   FutureOr<void> _getNews(GetNewsEvent event, emit) async {
@@ -19,10 +20,25 @@ class NewsBloc extends Bloc<NewsEvent, NewsState> {
       emit(NewsLoading());
 
       final List<Article> mList = await repository!.getLatestArticles();
-      emit(NewsLoaded(mList));
+
+      emit(NewsLoaded(data: mList));
     } on SocketException {
-      emit(NewsNetwork());
     } catch (ee) {
+      emit(const NewsError());
+    }
+  }
+
+  FutureOr<void> _getIsRead(IsRead event, emit) async {
+    try {
+      print('try');
+      // emit(NewsLoading());
+
+      final List<Article> mList = state.data;
+      mList[event.index] = mList[event.index].copyWith(readed: true);
+      emit(NewsLoaded(data: mList));
+    } on SocketException {
+    } catch (ee) {
+      print('error: ${ee}');
       emit(const NewsError());
     }
   }

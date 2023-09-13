@@ -11,4 +11,7 @@ class GetNewsEvent extends NewsEvent {
   const GetNewsEvent();
 }
 
-
+class IsRead extends NewsEvent {
+  final int index;
+  const IsRead({required this.index});
+}
